@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
+class HouseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -13,6 +13,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(HouseSeeder::class);
+        \App\Models\House\House::factory()->count(30)->create();
     }
 }
