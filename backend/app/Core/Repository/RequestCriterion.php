@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
+/**
+ * Class RequestCriterion
+ */
 class RequestCriterion implements Criterion
 {
     /**
@@ -24,6 +27,8 @@ class RequestCriterion implements Criterion
     public function __construct(Request $request)
     {
         $this->request = $request;
+
+
     }
 
     /**
@@ -35,7 +40,11 @@ class RequestCriterion implements Criterion
      */
     public function apply(Builder $builder, Repository $repository)
     {
-        return $this->setSearch($builder, $repository);
+        $model = $this->setSearch($builder, $repository);
+
+        $repository->setPerPage($this->request->get('per_page', 10));
+
+        return $model;
     }
 
     /**
@@ -49,7 +58,7 @@ class RequestCriterion implements Criterion
     {
         foreach ($this->filters() as $filter => $value) {
 
-            if (!$value && !in_array($filter, $repository->getSearchableFields())) {
+            if (!$value && !in_array($filter, $repository->getSearchableFields()) || $filter === 'page') {
                 continue;
             }
 

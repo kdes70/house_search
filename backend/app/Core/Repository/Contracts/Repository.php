@@ -3,7 +3,9 @@
 namespace App\Core\Repository\Contracts;
 
 use App\Core\Eloquent\AbstractModel;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Interface Repository
@@ -23,6 +25,22 @@ interface Repository
      * @return Builder
      */
     public function getQuery(): Builder;
+
+    /**
+     * @param int $value
+     *
+     * @return static
+     */
+    public function setPerPage(int $value = 10);
+
+    /**
+     * Пагинация запроса.
+     *
+     * @param Model|Builder|null $query
+     *
+     * @return LengthAwarePaginator
+     */
+    public function paginate($query = null): LengthAwarePaginator;
 
     /**
      * Поля по которым разрешен поиск

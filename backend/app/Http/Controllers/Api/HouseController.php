@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\HouseResource;
 use App\Services\HouseService;
-use Illuminate\Http\Request;
 
 /**
  * Class HouseController
@@ -27,8 +26,12 @@ class HouseController extends Controller
 
     public function index()
     {
+        $filters = $this->service->getFiltersParams();
+
         $houses = $this->service->getBySearch();
 
-        return HouseResource::collection($houses);
+        return HouseResource::collection($houses)->additional([
+            'available_filters' => $filters
+        ]);
     }
 }

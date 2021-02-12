@@ -5,6 +5,7 @@ namespace App\Core\Repository;
 use App\Core\Repository\Contracts\Criterion;
 use App\Core\Repository\Contracts\Repository;
 use App\Exceptions\RepositoryException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 
@@ -13,6 +14,9 @@ use Illuminate\Support\Collection;
  */
 abstract class AbstractRepository implements Repository
 {
+    /** @var int */
+    protected $perPage = 10;
+
     /**
      * @var array
      */
@@ -56,6 +60,29 @@ abstract class AbstractRepository implements Repository
     public function getQuery(): Builder
     {
         return $this->applyCriteria($this->getModel()->query());
+    }
+
+    /**
+     * @param int $value
+     *
+     * @return $this|AbstractRepository
+     */
+    public function setPerPage(int $value = 10)
+    {
+        $this->perPage = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param null $query
+     * @return LengthAwarePaginator
+     */
+    public function paginate($query = null): LengthAwarePaginator
+    {
+        $query = $query ?? $this->getQuery();
+
+        return $query->paginate($this->perPage);
     }
 
     /**
