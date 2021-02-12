@@ -30,7 +30,7 @@ cd root folder
 run 
 ```docker-compose up -d```
 
-run ```docker exec -it property_search_php bash```
+run ```docker exec -it house_search_php bash```
 
 run _$ ```composer install```
 
